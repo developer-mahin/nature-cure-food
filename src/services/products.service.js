@@ -12,7 +12,7 @@ export async function getAllProducts(options = {}) {
 
   try {
     const params = new URLSearchParams();
-    params.append("tenant", "Natural-cure-help");
+    params.append("tenant", "naturecure.food");
     if (page) params.append("page", page);
     if (limit) params.append("limit", limit);
     if (category) params.append("category", category);
