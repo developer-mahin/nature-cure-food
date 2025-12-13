@@ -1,0 +1,497 @@
+/* components/landing/LandingOrderWrapper.module.css */
+
+/* Production-grade isolation: Resets only inherited styles, preserves Tailwind */
+.orderWrapper {
+  /* Create new stacking context - prevents z-index conflicts */
+  isolation: isolate;
+  position: relative;
+  z-index: 100;
+
+  /* Reset only problematic inherited properties from landing page */
+  /* Keep display, width, height intact for Tailwind to work */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  color: #000000 !important;
+  background-color: #ffffff !important;
+
+  /* Reset text alignment and transforms that might be inherited */
+  text-align: left !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+
+  /* Ensure box-sizing works */
+  box-sizing: border-box !important;
+}
+
+/* Ensure all children inherit proper box-sizing */
+.orderWrapper *,
+.orderWrapper *::before,
+.orderWrapper *::after {
+  box-sizing: border-box !important;
+}
+
+/* Container styles */
+.orderWrapper .container {
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* Heading styles */
+.orderWrapper .heading {
+  font-size: 1.875rem !important;
+  font-weight: 700 !important;
+  color: #1f2937 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .heading {
+    font-size: 2.25rem !important;
+    margin-bottom: 2rem !important;
+  }
+}
+
+/* Product/Combo card styles */
+.orderWrapper .itemCard {
+  background-color: #ffffff !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  border-width: 2px !important;
+  border-style: solid !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px !important;
+  margin-bottom: 16px !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .itemCard {
+    gap: 16px !important;
+    padding: 16px !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .orderWrapper .itemCard {
+    gap: 24px !important;
+  }
+}
+
+.orderWrapper .itemCardSelected {
+  border-color: #10b981 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.orderWrapper .itemCardUnselected {
+  border-color: #e5e7eb !important;
+}
+
+.orderWrapper .itemCardUnselected:hover {
+  border-color: #86efac !important;
+}
+
+/* Radio button styles */
+.orderWrapper .radioButton {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  border-width: 2px !important;
+  border-style: solid !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .radioButton {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+.orderWrapper .radioButtonSelected {
+  background-color: #10b981 !important;
+  border-color: #059669 !important;
+}
+
+.orderWrapper .radioButtonUnselected {
+  background-color: #ffffff !important;
+  border-color: #d1d5db !important;
+}
+
+.orderWrapper .radioIcon {
+  width: 12px !important;
+  height: 12px !important;
+  color: #ffffff !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .radioIcon {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Image styles */
+.orderWrapper .imageContainer {
+  position: relative !important;
+  width: 64px !important;
+  height: 64px !important;
+  background-color: #f3f4f6 !important;
+  overflow: hidden !important;
+  border-radius: 0.5rem !important;
+  flex-shrink: 0 !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .imageContainer {
+    width: 96px !important;
+    height: 96px !important;
+  }
+}
+
+.orderWrapper .image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.orderWrapper .imagePlaceholder {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(135deg, #e9d5ff, #fbcfe8) !important;
+}
+
+.orderWrapper .placeholderIcon {
+  width: 32px !important;
+  height: 32px !important;
+  color: #8b5cf6 !important;
+}
+
+/* Content styles */
+.orderWrapper .content {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.orderWrapper .badgeContainer {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 4px !important;
+}
+
+.orderWrapper .badge {
+  font-size: 0.75rem !important;
+  background-color: #dbeafe !important;
+  color: #1e40af !important;
+  padding: 4px 8px !important;
+  border-radius: 9999px !important;
+}
+
+.orderWrapper .badgePurple {
+  background-color: #e9d5ff !important;
+  color: #6b21a8 !important;
+}
+
+.orderWrapper .badgeOrange {
+  background-color: #fed7aa !important;
+  color: #9a3412 !important;
+}
+
+.orderWrapper .badgeRed {
+  background-color: #fecaca !important;
+  color: #991b1b !important;
+}
+
+.orderWrapper .title {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+  margin-bottom: 2px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .title {
+    font-size: 1.125rem !important;
+    margin-bottom: 4px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .orderWrapper .title {
+    font-size: 1.25rem !important;
+  }
+}
+
+.orderWrapper .description {
+  font-size: 0.75rem !important;
+  color: #4b5563 !important;
+  margin-bottom: 8px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.orderWrapper .comboItems {
+  margin-bottom: 8px !important;
+}
+
+.orderWrapper .comboItemsTitle {
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  color: #374151 !important;
+  margin-bottom: 4px !important;
+}
+
+.orderWrapper .comboItem {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 0.75rem !important;
+  color: #4b5563 !important;
+}
+
+.orderWrapper .comboItemDot {
+  width: 4px !important;
+  height: 4px !important;
+  background-color: #9ca3af !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+
+.orderWrapper .moreItems {
+  font-size: 0.75rem !important;
+  color: #6b7280 !important;
+}
+
+/* Price styles */
+.orderWrapper .priceContainer {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+.orderWrapper .originalPrice {
+  font-size: 0.75rem !important;
+  color: #9ca3af !important;
+  text-decoration: line-through !important;
+}
+
+.orderWrapper .currentPrice {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #059669 !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .currentPrice {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* Quantity controls */
+.orderWrapper .quantityContainer {
+  flex-shrink: 0 !important;
+}
+
+.orderWrapper .quantityControls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.orderWrapper .quantityButton {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background-color: #e5e7eb !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #4b5563 !important;
+  transition: background-color 0.2s ease !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.orderWrapper .quantityButton:hover {
+  background-color: #d1d5db !important;
+  color: #374151 !important;
+}
+
+.orderWrapper .quantityDisplay {
+  width: 32px !important;
+  text-align: center !important;
+  font-weight: 500 !important;
+  color: #1f2937 !important;
+  font-size: 0.875rem !important;
+}
+
+/* Selection status */
+.orderWrapper .selectionStatus {
+  flex-shrink: 0 !important;
+}
+
+.orderWrapper .statusBadge {
+  padding: 6px 12px !important;
+  border-radius: 0.5rem !important;
+  font-weight: 500 !important;
+  transition: background-color 0.2s ease !important;
+  font-size: 0.75rem !important;
+  white-space: nowrap !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .statusBadge {
+    padding: 8px 24px !important;
+    font-size: 1rem !important;
+  }
+}
+
+.orderWrapper .statusSelected {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+.orderWrapper .statusUnselected {
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
+}
+
+/* Space utilities */
+.orderWrapper .spaceY3 > * + * {
+  margin-top: 12px !important;
+}
+
+.orderWrapper .spaceY4 > * + * {
+  margin-top: 16px !important;
+}
+
+.orderWrapper .mb8 {
+  margin-bottom: 32px !important;
+}
+
+.orderWrapper .mb12 {
+  margin-bottom: 48px !important;
+}
+
+@media (min-width: 640px) {
+  .orderWrapper .mb8 {
+    margin-bottom: 32px !important;
+  }
+
+  .orderWrapper .mb12 {
+    margin-bottom: 48px !important;
+  }
+}
+
+/* Flex utilities */
+.orderWrapper .flex {
+  display: flex !important;
+}
+
+.orderWrapper .itemsCenter {
+  align-items: center !important;
+}
+
+.orderWrapper .justifyBetween {
+  justify-content: space-between !important;
+}
+
+.orderWrapper .flexShrink0 {
+  flex-shrink: 0 !important;
+}
+
+.orderWrapper .flex1 {
+  flex: 1 !important;
+}
+
+.orderWrapper .minW0 {
+  min-width: 0 !important;
+}
+
+/* Text utilities */
+.orderWrapper .textXs {
+  font-size: 0.75rem !important;
+}
+
+.orderWrapper .textSm {
+  font-size: 0.875rem !important;
+}
+
+.orderWrapper .textLg {
+  font-size: 1.125rem !important;
+}
+
+.orderWrapper .textXl {
+  font-size: 1.25rem !important;
+}
+
+.orderWrapper .text2xl {
+  font-size: 1.5rem !important;
+}
+
+.orderWrapper .text3xl {
+  font-size: 1.875rem !important;
+}
+
+.orderWrapper .fontSemibold {
+  font-weight: 600 !important;
+}
+
+.orderWrapper .fontBold {
+  font-weight: 700 !important;
+}
+
+.orderWrapper .textGray900 {
+  color: #1f2937 !important;
+}
+
+.orderWrapper .textGray600 {
+  color: #4b5563 !important;
+}
+
+.orderWrapper .textGray700 {
+  color: #374151 !important;
+}
+
+.orderWrapper .truncate {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.orderWrapper .lineClamp2 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}

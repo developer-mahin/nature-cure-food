@@ -1,0 +1,225 @@
+---
+alwaysApply: true
+---
+
+# NatureBD Client Site - Production Rules
+
+## Production Scale Context
+
+This is a **client-facing e-commerce site** serving **200,000+ daily customers**. The site must be optimized for fast browsing and smooth ordering experience. Code must be production-ready, lightweight, and performant from day one.
+
+**Architecture Note**: This site's backend and dashboard are separated. The dashboard is multi-tenant and serves different purposes.
+
+## SEO Optimization Priority - #1 Business Goal
+
+**CRITICAL**: SEO optimization is the **highest priority** for this web application. The primary business goal is to generate organic sales through SEO implementation. Every code decision must prioritize SEO best practices and maximum SEO implementation possibilities.
+
+### SEO-First Development Standards
+
+- **SEO-optimized code structure** - Every component, page, and feature must be built with SEO in mind
+- **Semantic HTML** - Use proper HTML5 semantic elements (header, nav, main, article, section, aside, footer)
+- **Meta tags optimization** - Dynamic meta titles, descriptions, and Open Graph tags for every page
+- **Structured data implementation** - JSON-LD schema markup for products, reviews, organization, breadcrumbs
+- **URL structure optimization** - Clean, descriptive URLs with proper hierarchy
+- **Internal linking strategy** - Strategic internal linking to boost page authority
+- **Content optimization** - Keyword-rich, valuable content that serves user intent
+- **Technical SEO** - Fast loading, mobile-first, accessible, crawlable pages
+- **Site architecture** - Logical site structure that search engines can easily understand
+- **Performance for SEO** - Core Web Vitals optimization for better search rankings
+
+### SEO Implementation Checklist
+
+- [ ] Every page has unique, optimized meta titles and descriptions
+- [ ] Structured data (JSON-LD) implemented for all product pages
+- [ ] Proper heading hierarchy (H1, H2, H3) with keyword optimization
+- [ ] Alt text for all images with descriptive, keyword-rich content
+- [ ] Internal linking strategy implemented
+- [ ] XML sitemap generation and submission
+- [ ] Robots.txt optimization
+- [ ] Canonical URLs to prevent duplicate content
+- [ ] Breadcrumb navigation for better UX and SEO
+- [ ] Mobile-first responsive design
+- [ ] Page speed optimization (Core Web Vitals)
+- [ ] SSL certificate and HTTPS implementation
+- [ ] Social media meta tags (Open Graph, Twitter Cards)
+
+**Remember**: Every feature implementation must consider its SEO impact. Organic traffic growth through SEO is the primary revenue driver for this business.
+
+## Core Philosophy: Accuracy & Precision
+
+### Feature Implementation Standards
+
+- **Implement features accurately and on-point** - No extra functionality, no garbage code
+- **Single responsibility** - Each feature does ONE thing perfectly
+- **No duplicates** - Prevent any form of duplicate tracking, events, or functionality
+- **Industry-grade implementation** - Follow top-tier e-commerce company standards
+- **Production-ready from first commit** - Each feature must be complete and robust
+
+### Example: Pixel Implementation
+
+When implementing pixel tracking:
+
+- Track each event ONCE - No double visit tracking, no duplicate purchase events
+- Implement exactly as industry leaders do it
+- Be precise and accurate with every single event
+- Test thoroughly to ensure no duplicate tracking
+
+## Performance & Optimization Requirements
+
+### Core Principles
+
+1. **Optimize for speed** - Every millisecond counts with 200k+ daily visitors
+2. **Minimize bundle size** - Lazy load, code split, minimize dependencies
+3. **Monitor memory leaks** - Clean up subscriptions, timers, event listeners
+4. **Prioritize user experience** - Fast page loads, smooth interactions
+
+### Frontend Optimization
+
+- **Lazy load heavy components** - Use React.lazy() and Suspense for non-critical components
+- **Use React.memo, useMemo, useCallback with caution** - Only use when profiling shows actual performance issues. Follow Next.js 16 best practices - React is generally fast enough without premature optimization
+- **Avoid premature optimization** - Let React 19+ Server Components and Concurrent Rendering handle performance
+- **Code splitting by route** - Dynamic imports for pages
+- **Image optimization** - Always use Next.js Image component (not HTML img tags), lazy load, compress, use WebP format
+- **Virtualize long lists** - Use react-window or similar for product listings with 100+ items
+- **Debounce/throttle expensive operations** - Search, filtering, API calls
+- **Minimize prop drilling** - Use Context API strategically when needed
+- **Clean up effects** - Always return cleanup functions in useEffect
+- **Profile before optimizing** - Use React DevTools Profiler to identify actual bottlenecks
+
+### Backend Optimization
+
+- **Backend search implementation** - User search should send searchTerm as query parameter to backend (not client-side filtering)
+- **Caching strategy** - Implement Redis caching for frequently accessed data
+- **Database optimization** - Proper indexing, query optimization, connection pooling
+- **API response optimization** - Minimize payload sizes, implement pagination
+- **CDN for static assets** - All images, CSS, JS should be served via CDN
+
+## Code Quality Standards
+
+### Code Reusability
+
+- **DRY principle** - If code is used 2+ times, extract to a reusable component/function
+- **Create shared utilities** for common operations (validation, formatting, API calls)
+- **Use custom hooks** for repeated logic patterns
+- **Composition over duplication** - Build flexible components
+
+### Error Handling
+
+- **Always handle errors gracefully** - Never let errors crash the site
+- **Log errors with context** - Include user session, timestamp, request details
+- **Show user-friendly error messages** - Never expose internal errors
+- **Implement retry logic** for transient failures
+- **Use error boundaries** to catch React errors
+- **Graceful degradation** - Site should remain functional even if non-critical features fail
+
+### Security
+
+- **Validate all inputs** on both client and server
+- **Sanitize user inputs** to prevent XSS attacks
+- **Use parameterized queries** - Never use string concatenation
+- **Implement proper authentication** - Secure token management for customer sessions
+- **Rate limit sensitive operations** - Order placement, checkout, payment processing
+- **Store sensitive data securely** - Encrypt PII, secure payment data
+- **CSRF protection** - Implement CSRF tokens for form submissions
+
+## Specific Rules for This Project
+
+### Component Development
+
+- **Use Next.js Image component** - Never use HTML img tags (memory: 7874888)
+- **DSForm wrapper** - Use DSForm wrapper instead of React Hook Form's FormProvider (memory: 8499847)
+- **Prefer paragraph or textarea tags** for form field titles instead of HTML labels (memory: 8499832)
+- **Optimize API logging** - Only log URL and duration, omit parameters to reduce terminal clutter (memory: 8499823)
+- **Memoize expensive computations** in components
+- **Avoid inline functions** in render methods when possible
+
+### API & Data Management
+
+- **Backend search** - Always send searchTerm as query parameter to backend for user search (memory: 6581022)
+- **Bulk operations** - Create dedicated routes for bulk operations following proper schema
+- **API versioning** - Implement proper API versioning for future compatibility
+- **Request batching** - Batch multiple related requests when possible
+
+### Real-time Features
+
+- **Implement connection pooling** for Socket.io if real-time features are needed
+- **Use room-based subscriptions** - Don't subscribe to all events
+- **Clean up socket listeners** in useEffect cleanup
+- **Handle reconnection gracefully** - Show connection status to users
+
+### Third-party Integrations
+
+- **Pixels & Analytics** - Implement precise tracking with no duplicates
+- **Payment gateways** - Implement securely following PCI compliance
+- **Error monitoring** - Set up proper error tracking (Sentry, etc.)
+- **Performance monitoring** - Track Core Web Vitals, page load times
+
+## Testing Requirements
+
+- **Load test critical paths** - Test checkout, product browsing, search
+- **Test with realistic data volumes** - Simulate 200k+ visitor scenarios
+- **Performance regression testing** - Monitor response times
+- **Stress test database queries** - Verify indexes are effective
+- **Cross-browser testing** - Ensure compatibility across browsers
+- **Mobile performance testing** - Optimize for mobile devices
+
+## Deployment Checklist
+
+- [ ] All database indexes are in place
+- [ ] Redis caching is configured and working
+- [ ] API response times are under thresholds (< 200ms for critical paths)
+- [ ] Bundle sizes are optimized (< 250KB initial load)
+- [ ] No console.logs in production
+- [ ] Error monitoring is configured
+- [ ] Load testing passed (simulate 1000+ concurrent users)
+- [ ] Database connection pooling is configured
+- [ ] CDN is set up for static assets
+- [ ] Security headers are configured
+- [ ] Rate limiting is implemented
+- [ ] SSL/TLS is properly configured
+
+## Communication & Documentation
+
+### Code Changes Explanation
+
+When making code changes, always explain in detail:
+
+- **What was changed** - Specific code changes and affected areas
+- **Why it was changed** - The problem or requirement being addressed
+- **How it improves** - Performance, functionality, or user experience improvements
+- **Alignment with scale** - How it handles 200k+ daily visitors
+- **Expected outcome** - Quantifiable results (e.g., "reduces load time by 40%")
+- **Trade-offs** - Any compromises or design decisions made
+- **Side effects** - If changes affect other parts of the system
+
+### Example of Good Change Explanation:
+
+"I implemented Redis caching for the product listing endpoint, reducing database load by 80% and improving API response time from 400ms to 50ms. This is critical for handling 200k+ daily customers where product data is accessed millions of times. The cache expires after 5 minutes to ensure pricing accuracy. This will reduce server costs by approximately 60%."
+
+## Industry Best Practices
+
+### E-commerce Standards
+
+- **Follow industry leaders** - Implement features as top-tier e-commerce companies do
+- **Progressive enhancement** - Build for low-end devices, enhance for high-end
+- **Accessibility** - WCAG 2.1 AA compliance minimum
+- **SEO optimization** - Proper meta tags, structured data, sitemap
+- **Mobile-first design** - Optimize for mobile experience first
+
+### Code Standards
+
+- **Clean code** - Readable, maintainable, well-structured
+- **Proper naming** - Descriptive variable and function names
+- **Documentation** - JSDoc comments for complex functions
+- **Type safety** - Use TypeScript properly with strict types
+- **Code reviews** - All code should be reviewable and maintainable
+
+---
+
+## Remember
+
+**This site serves 200,000+ customers daily. Every optimization matters. Every millisecond counts. Every line of code must be purposeful and optimized.**
+
+**Think like an engineer at a top-tier e-commerce company. Implement features accurately, precisely, and professionally. No shortcuts. No garbage code. No duplicates.**
+
+**When making changes, always explain: What you did, Why you did it, and How it improves the customer experience at scale.**
