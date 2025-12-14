@@ -27,6 +27,7 @@ const LandingOrderWrapper = ({
   const [selectedItems, setSelectedItems] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [shippingMethod, setShippingMethod] = useState("free-delivery");
+  const [deselectedItems, setDeselectedItems] = useState(new Set()); // Track explicitly deselected items
   const [phoneNumber, setPhoneNumber] = useState();
   const [customerName, setCustomerName] = useState();
   const [customerAddress, setCustomerAddress] = useState();
@@ -117,23 +118,50 @@ const LandingOrderWrapper = ({
 
   useEffect(() => {
     clearCart();
-    if (products.length > 0) {
-      const firstProduct = products[0];
-      const quantity = firstProduct.quantity || 1;
-      setSelectedItems([{ id: firstProduct.id, type: "product" }]);
-      setQuantities({ [firstProduct.id]: quantity });
+    // Clear deselected items when products/combos change
+    setDeselectedItems(new Set());
 
-      addToLandingCart(firstProduct, "product", quantity);
-    } else if (combos.length > 0) {
-      const firstCombo = combos[0];
-      setSelectedItems([{ id: firstCombo.id, type: "combo" }]);
-      setQuantities({ [firstCombo.id]: 1 });
+    // Find all products/combos with isSelected: true for multiple selection
+    const selectedProducts = products.filter((p) => p.isSelected === true);
+    const selectedCombos = combos.filter((c) => c.isSelected === true);
 
-      addToLandingCart(firstCombo, "combo", 1);
-    } else {
-      setSelectedItems([]);
-      setQuantities({});
+    const initialSelectedItems = [];
+    const initialQuantities = {};
+
+    // Add all selected products
+    selectedProducts.forEach((product) => {
+      const quantity = product.quantity || 1;
+      initialSelectedItems.push({ id: product.id, type: "product" });
+      initialQuantities[product.id] = quantity;
+      addToLandingCart(product, "product", quantity);
+    });
+
+    // Add all selected combos
+    selectedCombos.forEach((combo) => {
+      const quantity = combo.quantity || 1;
+      initialSelectedItems.push({ id: combo.id, type: "combo" });
+      initialQuantities[combo.id] = quantity;
+      addToLandingCart(combo, "combo", quantity);
+    });
+
+    // If no items are pre-selected, select first product/combo (backward compatibility)
+    if (initialSelectedItems.length === 0) {
+      if (products.length > 0) {
+        const firstProduct = products[0];
+        const quantity = firstProduct.quantity || 1;
+        initialSelectedItems.push({ id: firstProduct.id, type: "product" });
+        initialQuantities[firstProduct.id] = quantity;
+        addToLandingCart(firstProduct, "product", quantity);
+      } else if (combos.length > 0) {
+        const firstCombo = combos[0];
+        initialSelectedItems.push({ id: firstCombo.id, type: "combo" });
+        initialQuantities[firstCombo.id] = 1;
+        addToLandingCart(firstCombo, "combo", 1);
+      }
     }
+
+    setSelectedItems(initialSelectedItems);
+    setQuantities(initialQuantities);
   }, [products, combos, clearCart]);
 
   useEffect(() => {
@@ -156,19 +184,49 @@ const LandingOrderWrapper = ({
     const isCurrentlySelected = isItemSelected(itemId);
 
     if (isCurrentlySelected) {
+      // Remove item from selection (multiple select - allow deselection)
+      setSelectedItems((prev) => prev.filter((item) => item.id !== itemId));
+
+      // Remove quantity for this item
+      setQuantities((prev) => {
+        const newQuantities = { ...prev };
+        delete newQuantities[itemId];
+        return newQuantities;
+      });
+
+      // Remove from cart
+      removeProduct(itemId);
+
+      // Mark as explicitly deselected (even if it has isSelected: true)
+      setDeselectedItems((prev) => new Set(prev).add(itemId));
       return;
     }
 
-    clearCart();
-    setSelectedItems([{ id: itemId, type: itemType }]);
+    // Add item to selection (multiple select - allow multiple items)
+    // Remove from deselected items if it was previously deselected
+    setDeselectedItems((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(itemId);
+      return newSet;
+    });
 
+    // Add to selected items
+    setSelectedItems((prev) => {
+      // Check if already in array (shouldn't happen, but safety check)
+      if (prev.some((item) => item.id === itemId)) {
+        return prev;
+      }
+      return [...prev, { id: itemId, type: itemType }];
+    });
+
+    // Preserve or set quantity
     const preservedQuantity = quantities[itemId] || 1;
-
     setQuantities((prev) => ({
       ...prev,
       [itemId]: preservedQuantity,
     }));
 
+    // Add to cart
     const itemToAdd =
       itemType === "product"
         ? products.find((p) => p.id === itemId)
@@ -180,7 +238,11 @@ const LandingOrderWrapper = ({
   };
 
   const isItemSelected = (itemId) => {
-    return selectedItems.some((item) => item.id === itemId);
+    // Item is selected if it's in selectedItems AND not explicitly deselected
+    return (
+      selectedItems.some((item) => item.id === itemId) &&
+      !deselectedItems.has(itemId)
+    );
   };
 
   const updateQuantity = (itemId, newQuantity) => {
@@ -491,6 +553,7 @@ const LandingOrderWrapper = ({
         decrementQuantity={decrementQuantity}
         incrementQuantity={incrementQuantity}
         quantities={quantities}
+        deselectedItems={deselectedItems}
       />
 
       {/* Order Form Section */}

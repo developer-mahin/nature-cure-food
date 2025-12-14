@@ -56,7 +56,7 @@ const OrderSummary = ({
       <button
         type="button"
         onClick={onOrderConfirm}
-        disabled={isSubmitting}
+        disabled={isSubmitting || total === 0}
         className="w-full font-hind bg-green-600 cursor-pointer hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 sm:py-4 rounded-lg flex items-center justify-center gap-2 transition-colors sm:text-base"
       >
         {isSubmitting ? (
@@ -111,7 +111,7 @@ const OrderSummary = ({
       >
         <LucidePhoneCall className="size-5" />
         আমাদের বিশেষজ্ঞের সাথে সরাসরি কথা বলুন <br />
-        01335134988 , 01753098960
+        01335-134988 , 01753-098960
       </button>
     </div>
   );
