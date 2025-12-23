@@ -15,11 +15,11 @@ import LandingOrderForm from "./LandingOrderFrom";
 import styles from "./LandingOrderWrapper.module.css";
 import OrderSummary from "./OrderSummary";
 import ProductComponent from "./ProductComponent";
-import ThankOutModal from "./ThankOutModal";
 
 const LandingOrderWrapper = ({
   products = [],
   combos = [],
+  page,
   deliveryRateInside,
   deliveryRateOutside,
 }) => {
@@ -33,8 +33,6 @@ const LandingOrderWrapper = ({
   const [customerAddress, setCustomerAddress] = useState();
   const [addressField, setAddressField] = useState({});
   const [subTotal, setSubTotal] = useState(0);
-  const [showThankYouModal, setShowThankYouModal] = useState(false);
-  const [orderDetails, setOrderDetails] = useState(null);
   const formRef = useRef(null);
   const incompleteOrderAbortRef = useRef(null);
   const incompleteOrderTimerRef = useRef(null);
@@ -47,40 +45,6 @@ const LandingOrderWrapper = ({
     removeProduct,
     clearCart,
   } = useLandingCart();
-
-  // const addToLandingCart = (item, itemType, overrideQuantity = null) => {
-  //   const quantity =
-  //     overrideQuantity !== null ? overrideQuantity : quantities[item.id] || 1;
-
-  //   if (itemType === "product") {
-  //     const cartItem = {
-  //       id: item.id,
-  //       name: item.product.name,
-  //       price: parseFloat(
-  //         item.variant?.discountPrice || item.variant?.price || 0
-  //       ),
-  //       coverImg: item.product.coverImg,
-  //       description: item.product.description,
-  //       variant: item.variant
-  //         ? {
-  //             variantId: item.variant.id,
-  //             size: item.variant.size,
-  //             measurement: item.variant.measurement,
-  //           }
-  //         : null,
-  //     };
-  //     addItem(cartItem, quantity, true);
-  //   } else if (itemType === "combo") {
-  //     const cartItem = {
-  //       id: item.id,
-  //       name: item.combo.name,
-  //       price: parseFloat(item.combo?.discountPrice || item.combo?.price || 0),
-  //       coverImg: item.combo.imageUrl,
-  //       description: item.combo.description,
-  //     };
-  //     addItem(cartItem, quantity, true);
-  //   }
-  // };
 
   const addToLandingCart = (item, itemType, overrideQuantity = null) => {
     const quantity =
@@ -344,7 +308,7 @@ const LandingOrderWrapper = ({
             customerPhone: phoneNumber,
             customerName: customerName || "",
             customerAddress: fullAddress,
-            source: "unipharma",
+            source: "naturecurefood",
             ...(productIds.length > 0 && { productId: productIds }),
             ...(comboIds.length > 0 && { comboPackId: comboIds }),
           };
@@ -476,8 +440,8 @@ const LandingOrderWrapper = ({
         displayItems
       );
 
-      // Set order details for thank you modal
-      setOrderDetails({
+      // Set order details for thank you page
+      const orderDetails = {
         orderId: result?.data?.id || "N/A",
         items: displayItems.map((item) => {
           const selectedItem = selectedItems.find((s) => s.id === item.id);
@@ -490,7 +454,7 @@ const LandingOrderWrapper = ({
             );
             return {
               type: "product",
-              name: item.product.name,
+              name: item.title || item.product.name,
               size: variant?.size,
               measurement: variant?.measurement,
               quantity,
@@ -503,7 +467,7 @@ const LandingOrderWrapper = ({
             const price = parseFloat(combo?.discountPrice || combo?.price || 0);
             return {
               type: "combo",
-              name: combo.name,
+              name: item.title || combo.name,
               quantity,
               price,
               total: price * quantity,
@@ -514,10 +478,13 @@ const LandingOrderWrapper = ({
         totalBill,
         deliveryCost,
         customerName: data.customerName || customerName || "",
-      });
+      };
 
-      // Show thank you modal
-      setShowThankYouModal(true);
+      // Store in session storage
+      sessionStorage.setItem("orderDetails", JSON.stringify(orderDetails));
+
+      // Redirect to thank you page
+      window.location.href = "/thank-you";
 
       if (formRef.current?.clear) {
         formRef.current.clear();
@@ -548,6 +515,7 @@ const LandingOrderWrapper = ({
       <ProductComponent
         products={products}
         combos={combos}
+        page={page}
         isItemSelected={isItemSelected}
         toggleItemSelection={toggleItemSelection}
         decrementQuantity={decrementQuantity}
@@ -579,12 +547,6 @@ const LandingOrderWrapper = ({
           setSubTotal={setSubTotal}
         />
       </LandingOrderForm>
-
-      <ThankOutModal
-        showThankYouModal={showThankYouModal}
-        setShowThankYouModal={setShowThankYouModal}
-        orderDetails={orderDetails}
-      />
     </div>
   );
 };

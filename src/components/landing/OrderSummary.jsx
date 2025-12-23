@@ -45,8 +45,6 @@ const OrderSummary = ({
   return (
     <div className="border rounded-lg p-3 sm:p-4 shadow-sm bg-white md:sticky md:top-4 h-fit">
       <div className="flex justify-between items-center mb-4 pt-2  border-gray-200">
-        {" "}
-        {/* border-t-2 */}
         <h3 className="text-base sm:text-lg font-bold font-hind">টোটাল</h3>
         <span className="text-lg sm:text-xl font-bold text-gray-800">
           ৳{total}
@@ -56,7 +54,9 @@ const OrderSummary = ({
       <button
         type="button"
         onClick={onOrderConfirm}
-        disabled={isSubmitting || total === 0}
+        disabled={
+          isSubmitting || total === 0 || subtotal === 0 || items.length === 0
+        }
         className="w-full font-hind bg-green-600 cursor-pointer hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 sm:py-4 rounded-lg flex items-center justify-center gap-2 transition-colors sm:text-base"
       >
         {isSubmitting ? (
@@ -111,7 +111,7 @@ const OrderSummary = ({
       >
         <LucidePhoneCall className="size-5" />
         আমাদের বিশেষজ্ঞের সাথে সরাসরি কথা বলুন <br />
-        01335-134988 , 01753-098960
+        01335134988 , 01753098960
       </button>
     </div>
   );

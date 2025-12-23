@@ -285,8 +285,8 @@ const ProductComponent = ({
               <div className="flex-1 min-w-0 w-full order-2 sm:order-3">
                 <h3 className="text-base sm:text-xl font-semibold text-gray-900 mb-2 break-words">
                   {landingProduct.title || product.name} (
-                  <span className="capitalize">{variant?.size}</span>{" "}
-                  {variant?.measurement})
+                  <span className="capitalize">{variant?.measurement}</span>{" "}
+                  <span className="capitalize">{variant?.size}</span>)
                 </h3>
                 {landingProduct.description && (
                   <p className="text-sm text-gray-600 mb-3 line-clamp-2">

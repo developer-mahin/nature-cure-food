@@ -95,6 +95,7 @@ const LandingPageDetails = async ({ params }) => {
               <LandingOrderWrapper
                 products={page.products || []}
                 combos={page.combos || []}
+                page={page}
                 deliveryRateInside={page.deliveryRateInside}
                 deliveryRateOutside={page.deliveryRateOutside}
               />
